@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleForm.css') }}">
+    </head>
+<body>
+
+<div class="container">
+
+    <div class="content">
+        <div class="text">Login Page</div>
+        <div class="text2">Login with the credentials you made an account with</div>
+        <form method="POST" action="" class="rounded-form">
+            {{form.hidden_tag()}}
+            {{form.username}}
+            {{form.password (type="password")}}
+            {{form.submit(class="btn")}}
+        </form>
+        <a href="{{ url_for('register') }}">Don't have an account? Sign up</a>
+        <!-- <button class="btn" type="button" onclick="window.location.href ='loginPage'">Yes</button>
+        <button class="btn" type="button" onclick="window.location.href ='registerPage'">No</button> -->
+    </div>
+
+</div>
+
+</body>
+</html>

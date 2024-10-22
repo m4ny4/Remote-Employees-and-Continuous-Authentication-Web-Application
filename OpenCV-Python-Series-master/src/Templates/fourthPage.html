@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="styleTemp.css">
+    <!-- uncomment the line of code below and comment the one above for the CSS to work when running webApp.py -->
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style4.css') }}"> -->
+    
+    <title>Document</title>
+</head>
+<body>
+    <div class="circle">
+        <img src="Images/\girllogo.png" alt="">
+        <div class="secInASession" id="countdown">
+        </div>
+    </div>
+    <script>
+
+        selectedTechnique = 'original';  //uncomment the line below to use the actual techinique that was selected by the user
+        // var selectedTechnique =  sessionStorage.getItem('pomodorType');
+        
+        var hours = 0;  //uncomment the line below to use the actual hours that were selected by the user
+        // var hours = parseInt(sessionStorage.getItem('countdownHours')) || 0;
+
+        var minutes = 0.65;  //uncomment the line below to use the actual minutes that were selected by the user
+        // var minutes = parseInt(sessionStorage.getItem('countdownMinutes')) || 0;
+
+        //Use this variable to add the total time the user was AFK 
+        var AFKtime = 0;
+
+        //HTML element containing the secInASession
+        var countdownElement = document.getElementById('countdown');
+
+        //Total time to study in seconds
+        var totalSeconds = 3600*hours+60*minutes;
+
+        //The number of study sessions remaining
+        var sessionsRemaining = 0;
+
+        //The time to be added to the last session if the length of the session does not divide with the session length
+        //Example: If 55 minutes were selected and a study session is 25 min, then 55%25 = 5 which is the excess
+        //time that will be added to the last session. This will make the total study plan one session of 25 minutes
+        //and one session of 30
+        var excessOfSeconds=0;
+        
+
+        //Starting the desired secInASession based on the selected technique        
+        switch (selectedTechnique) {
+            case 'original':
+                startSession(totalSeconds,25,5); 
+                break;
+            case 'desktime':
+                startSession(totalSeconds,52,17);
+                break;
+            case 'ultradian':
+                startSession(totalSeconds,90,30);
+                break;
+            default:
+                console.log("No pomodoro technique selected");
+                break;
+        }
+
+        //Initiates the session
+        function startSession(seconds,minInASession,minInABreak){
+            //Calculate number of sessions
+            sessionsRemaining = Math.floor(seconds/(minInASession*60));
+            //Caculate the overflow of seconds to be added in the last session
+            excessOfSeconds = seconds%(minInASession*60);
+            //Total seconds in a session
+            secInASession=(minInASession*60);
+            //Total sesconds in a break
+            secInABreak = minInABreak*60;
+            //Initiate the timer
+            sessionCountdown(secInASession, secInABreak);
+        }
+
+
+        function sessionCountdown(secInASession, minInABreak) {
+            //The countdown of seconds in this session
+            countdown=secInASession-1;
+            //This functions calls itself every seconds acting as a timer
+            intervalID = setInterval(function() {
+                //Caculate the minutes left in this session
+                minsLeft = Math.floor(countdown/60);
+                //Calculate the seconds left in this session
+                secondsLeft = countdown-(Math.floor(countdown/60)*60);
+                //Display the minutes and seconds left
+                countdownElement.innerHTML = String(minsLeft).padStart(2, '0')+":"+String(secondsLeft).padStart(2, '0');
+                //Check if session ended
+                if(countdown==0){
+                    //Subtract one from the total number of sessions
+                    sessionsRemaining--;
+                    //Stop the current funtion setInterval()
+                    clearInterval(intervalID);
+                    //Check if was the last session
+                    if(sessionsRemaining>0){
+                        //Start break if there are other sessions left
+                        breakCountdown(secInASession, minInABreak);
+                    }
+                }
+                //Decrese the countdown
+                countdown--;
+            }, 1000)
+        }
+        function breakCountdown(secInASession, minInABreak){
+            //The countdown of seconds in this break
+            countdown=minInABreak-1;
+            //Almost everything is the same as in the sessionCountdown() function 
+            intervalID = setInterval(function() {
+                minsLeft = Math.floor(countdown/60);
+                secondsLeft = countdown-(Math.floor(countdown/60)*60);
+                countdownElement.innerHTML = String(minsLeft).padStart(2, '0')+":"+String(secondsLeft).padStart(2, '0');
+                if(countdown==0){
+                    clearInterval(intervalID);
+                    if(sessionsRemaining==1){
+                        //If the last session remaining is about to start then the excess of seconds and the AFK time of the user will
+                        //be added to the total time in the last session
+                        sessionCountdown(secInASession+excessOfSeconds+AFKtime, minInABreak)
+                    }
+                    else{
+                        //Start the new session countdown
+                        sessionCountdown(secInASession, minInABreak)
+                    }
+                }
+                countdown--;
+            }, 1000)
+        }
+    </script>
+</body>
+</html>

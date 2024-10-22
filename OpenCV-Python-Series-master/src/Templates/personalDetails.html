@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleForm.css') }}">
+    </head>
+<body>
+
+<div class="container">
+
+    <div class="content">
+        <div class="text">Personal Details</div>
+        <form method="POST" action="" class="rounded-form">
+            {{form.hidden_tag()}}
+            {{form.first_name}}
+            {{form.last_name}}
+            <div class="birthday-label">
+                <label for="day">Birthday:</label>
+            </div>
+            
+            <div class="birthday-select">
+                {{ form.day_of_birth(id="day", class="form-control") }}
+                {{ form.month_of_birth(id="month", class="form-control") }}
+                {{ form.year_of_birth(id="year", class="form-control") }}
+            </div>
+
+            <label for="gender">Gender:</label>
+            {{ form.gender(id="gender", class="form-control") }}
+
+            {{form.occupation}}
+      <!-- End of Date of Birth Dropdowns -->
+            {{form.submit(class="btn")}}  <!-- Add class "btn" to the submit button -->
+        </form>
+        <!-- <button class="btn" type="button" onclick="window.location.href ='loginPage'">Yes</button>
+        <button class="btn" type="button" onclick="window.location.href ='registerPage'">No</button> -->
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleForm.css') }}">
+    </head>
+<body>
+
+<div class="container">
+
+    <div class="content">
+        <div class="text">Register Page</div>
+        <div class="text2">Create a unique username and password that you will remember</div>
+        <form method="POST" action="" class="rounded-form">
+            {{form.csrf_token }}
+            {{form.username}}
+            {{form.password (type="password")}}
+            {{form.submit(class="btn")}}  <!-- Add class "btn" to the submit button -->
+        </form>
+        <a href="{{ url_for('login') }}">Already have an account? Log In</a>
+        <!-- <button class="btn" type="button" onclick="window.location.href ='loginPage'">Yes</button>
+        <button class="btn" type="button" onclick="window.location.href ='registerPage'">No</button> -->
+    </div>
+
+</div>
+
+<script>
+    // Set the username in session storage
+    // sessionStorage.setItem('username', '{{ username }}');
+    // console.log(sessionStorage.getItem('username'))
+
+    document.write("Register page");
+    console.log("Register page");
+    // Set the username in session storage
+    var usernameValue = '{{ username }}';
+    sessionStorage.setItem('username', usernameValue);
+    //document.write("Stored username ",usernameValue);
+    console.log("Stored username in session storage:", usernameValue);
+
+
+    
+</script>
+
+</body>
+</html>

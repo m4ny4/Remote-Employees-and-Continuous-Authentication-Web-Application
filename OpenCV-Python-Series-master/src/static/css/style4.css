@@ -1,0 +1,44 @@
+@font-face {
+    font-family: Bogart;
+    src: url(../Fonts/BOGARTEXTRABOLDTRIAL.ttf);
+  }
+@font-face {
+    font-family: Bogart2;
+    src: url(../Fonts/Bogart-Light-trial.ttf);
+}
+@font-face {
+    font-family: Now;
+    src: url("../Fonts/now.thin.otf") format("opentype");
+}
+body,html {
+    margin: 0;
+    padding: 0;
+    background-color: #FFEDDB;
+}
+* {
+    box-sizing: border-box;
+}
+.circle{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 30vw;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: #FAEFE3;
+    box-shadow: 0 0 0 5px #E08479,0  0 0 15px #FFEDDB, 0 0 0 20px #5A794F;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+}
+img {
+    margin-top: 4%;
+    max-width:65%;
+}
+.circle>div{
+    margin-top: 5%;
+    font-family: Bogart;
+    font-size: 5rem;
+}

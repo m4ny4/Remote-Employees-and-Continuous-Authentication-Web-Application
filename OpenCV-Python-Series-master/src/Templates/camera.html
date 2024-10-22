@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleForm.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="content">
+        <div class="text">Facial Scans</div>
+        <div class="text2">Please read & follow these instructions carefully:</div>
+        <div class="text2">Please take 5 pictures of yourself: One with you facing the camera, one with you facing 10 degrees to your left, one with you facing 10 degrees to your right, if you wear glasses then one with and one without, and if you don't then one smiling!</div>
+        <div class="text2">You must press on the "Click" button to activate the camera. Once the camera pops up and you have positioned yourself as asked, please click on "S" on your keyboard so the picture is snapped and saved. Once this closes, you will have to press the button for the next picture again</div>
+        <div class="text2">Please be patient between each click. Press once, and the camera will pop up in a bit.</div>
+        <div class="text2">Once you are done with four pictures, please press the button again, you will be redirected to the next page. This may take some time, please be patient</div>
+        
+        <button class="btn" id="captureButton">Click!</button>
+    </div>
+
+</div>
+
+<script>
+    //let Username = String(sessionStorage.getItem('username'));
+    let photoCount = 1;  // Initialize photo count
+    let Username = '{{username}}';
+
+    console.log("Username in storage: ", Username)
+    console.log(typeof Username)
+
+    const captureButton = document.getElementById("captureButton");
+
+    captureButton.addEventListener("click", async () => {
+        try {
+            // Communicate with the server to trigger picture capture
+            // const response = await fetch(`/camera/${username}/${photoCount}`, {
+            //     const response = await fetch(`/camera/?username=${username}&photoCount=${photoCount}`, {
+            //     method: "POST",
+            // });
+
+            // if (response.ok) {
+            //     console.log(`Picture captured successfully!`);
+            // } else {
+            //     console.error(`Failed to capture picture. Status: ${response.status}`);
+            // }
+
+            fetch('/cam', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ Username, photoCount })
+                //body: JSON.stringify({ parseInt(sessionStorage.getItem('countdownHours')), parseInt(sessionStorage.getItem('countdownHours')))
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display success message
+                console.log(data.message);
+                photoCount++;
+                if(data.message === "Classifier done") {
+                    //window.location.href = '/SystemA.html';
+                    window.location.href = '{{ url_for("login") }}';
+
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+            //photoCount++;
+
+            // Increment the photo count for the next request
+            //photoCount++;
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+    // Initialize the camera when the page loads
+    // navigator.mediaDevices.getUserMedia({ video: true })
+    //     .then((stream) => {
+    //         const video = document.createElement('video');
+    //         document.body.appendChild(video);
+    //         video.srcObject = stream;
+    //         video.play();
+    //     })
+    //     .catch((error) => {
+    //         console.error('Error accessing the camera:', error);
+    //     });
+</script>
+
+</script>
+
+</body>
+</html>
