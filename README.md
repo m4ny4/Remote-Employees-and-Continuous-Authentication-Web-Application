@@ -1,0 +1,2 @@
+# Remote-Employees-and-Continuous-Authentication-Web-Application
+This web application is designed to evaluate and compare different authentication methods for remote employees, focusing on both security and user convenience. With the growing reliance on remote work systems, it is crucial to identify the best authentication strategies that ensure robust security while maintaining an efficient workflow.
