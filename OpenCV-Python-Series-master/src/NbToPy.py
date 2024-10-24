@@ -19,11 +19,14 @@ from keras.models import load_model
 from keras.optimizers import SGD
 from keras.callbacks import EarlyStopping,ModelCheckpoint
 from keras.layers import MaxPool2D
+import os
+
+current_directory = os.getcwd()
+os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml')
 
 # %%
-train_path='D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\imageTemp'
-#train_path = 'D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\images'
-test_path='D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\imagesTest'
+train_path=os.path.join(current_directory, 'imageTemp')
+test_path=os.path.join(current_directory, 'imagesTest')
 IMAGE_SIZE = [224,224]
 
 # %%
@@ -35,7 +38,7 @@ for layer in vgg.layers:
 
 # %%
 #folders = glob(train_path)
-folders = glob('D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\imageTemp\*')
+folders = glob(os.path.join(current_directory, 'imageTemp', '*'))
 
 # %%
 #folders

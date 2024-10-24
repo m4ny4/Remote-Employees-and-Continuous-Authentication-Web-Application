@@ -61,11 +61,10 @@ systemType = "A"
 facial_recognition_thread = None
 otp_thread = None
 
-
-TEMP_IMAGE_FOLDER = 'D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\images'
-IMAGE_FOLDER = 'D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\images'
-MODEL_PATH = 'D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\recognizers\\face-trainner.yml'
-
+current_directory = os.getcwd()
+TEMP_IMAGE_FOLDER = os.path.join(current_directory, 'images')
+IMAGE_FOLDER = os.path.join(current_directory, 'images')
+MODEL_PATH = os.path.join(current_directory, 'recognizers', 'face-trainner.yml')
 
 app = Flask(__name__,template_folder='Templates')
 login_manager = LoginManager()
@@ -73,8 +72,10 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 app.debug=True
 logging.basicConfig(level=logging.DEBUG)
-dbpath = 'D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\database2.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///D:/TCS_YF/Research/OpenCV-Python-Series-master/OpenCV-Python-Series-master/src/database2.db'
+current_directory = os.getcwd()
+dbpath = os.path.join(current_directory, "database2.db")
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///D:/TCS_YF/Research/OpenCV-Python-Series-master/OpenCV-Python-Series-master/src/database2.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{dbpath}'
 app.config['SECRET_KEY'] = 'randomKeyForNow'
 app.config['SERVER_NAME'] = 'localhost:5000'
 db = SQLAlchemy(app)
@@ -540,6 +541,16 @@ def capture_picture():
 
 
 if __name__ == '__main__':
+    print("CURRENT DIRECTORY IS:", os.getcwd())
+    current_directory = os.getcwd()
+    TEMP_IMAGE_FOLDER = os.path.join(current_directory, 'images')
+    IMAGE_FOLDER = os.path.join(current_directory, 'images')
+    MODEL_PATH = os.path.join(current_directory, 'recognizers', 'face-trainner.yml')
+
+# Print the paths to verify
+    print(f"TEMP_IMAGE_FOLDER: {TEMP_IMAGE_FOLDER}")
+    print(f"IMAGE_FOLDER: {IMAGE_FOLDER}")
+    print(f"MODEL_PATH: {MODEL_PATH}")
     with app.app_context():
         db.create_all()
     #app.run(debug=True)

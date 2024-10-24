@@ -9,6 +9,7 @@ from PIL import Image
 
 recognizer = None
 label_ids = None
+current_directory = os.getcwd()
 
 def augment_data(image, label):
     augmented_images = []
@@ -48,9 +49,9 @@ def train_classifier2():
     global recognizer
     global label_ids
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    image_dir = os.path.join(BASE_DIR, "images")
+    image_dir = os.path.join(current_directory, "images")
 
-    face_cascade = cv2.CascadeClassifier('D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\cascades\data\haarcascade_frontalface_alt2.xml')
+    face_cascade = cv2.CascadeClassifier(os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml'))
     recognizer = cv2.face.LBPHFaceRecognizer_create()
 
     current_id = 0
@@ -88,23 +89,24 @@ def train_classifier2():
                         x_train.append(augmented_image)
                     y_labels.extend(augmented_labels)
 
-    with open("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labels.pickle", 'wb') as f:
+    
+    with open(os.path.join(current_directory, 'pickles', 'face-labels.pickle'),'wb') as f:
         pickle.dump(label_ids, f)
 
     recognizer.train(x_train, np.array(y_labels))
-    recognizer.save("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\recognizers\\face-trainner.yml")
+    recognizer.save(os.path.join(current_directory, 'recognizers', 'face-trainner.yml'))
 
 
 def perform_facial_recognition_on_directory(directory_path,scale_factor,min_neighbours):
     #print(f"The Python script is running under the username: {username}")
 
-    face_cascade = cv2.CascadeClassifier('D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\cascades\data\haarcascade_frontalface_alt2.xml')
+    face_cascade = cv2.CascadeClassifier(cv2.CascadeClassifier(os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml')))
     #side_cascade = cv2.CascadeClassifier
     recognizer = cv2.face.LBPHFaceRecognizer_create()
-    recognizer.read("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\recognizers\\face-trainner.yml")
+    recognizer.read(os.path.join(current_directory, 'recognizers', 'face-trainner.yml'))
 
     labels = {"person_name": 1}
-    with open("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labels.pickle", 'rb') as f:
+    with open(os.path.join(current_directory, 'pickles', 'face-labels.pickle'), 'rb') as f:
         og_labels = pickle.load(f)
         labels = {v: k for k, v in og_labels.items()}
     #print(og_labels)
@@ -157,58 +159,13 @@ def retLabel():
     global label_ids
     return label_ids
 
-# def train_classifier2():
-#     global recognizer
-#     global label_ids
-#     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-#     image_dir = os.path.join(BASE_DIR, "images")
-
-#     face_cascade = cv2.CascadeClassifier('D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\cascades\data\haarcascade_frontalface_alt2.xml')
-#     recognizer = cv2.face.LBPHFaceRecognizer_create()
-
-#     current_id = 0
-#     label_ids = {}
-#     y_labels = []
-#     x_train = []
-
-#     for root, dirs, files in os.walk(image_dir):
-#         for file in files:
-#             if file.endswith("png") or file.endswith("jpg"):
-#                 path = os.path.join(root, file)
-#                 label = os.path.basename(root).replace(" ", "-").lower()
-#                 #print(f"Processing: {label} - {path}")
-
-#                 if not label in label_ids:
-#                     label_ids[label] = current_id
-#                     current_id += 1
-#                 id_ = label_ids[label]
-
-#                 pil_image = Image.open(path).convert("L")  # grayscale
-#                 size = (550, 550)
-#                 final_image = pil_image.resize(size, Image.LANCZOS)
-#                 image_array = np.array(final_image, "uint8")
-
-#                 faces = face_cascade.detectMultiScale(image_array, scaleFactor=1.5, minNeighbors=5)
-
-#                 for (x, y, w, h) in faces:
-#                     roi = image_array[y:y + h, x:x + w]
-#                     x_train.append(roi)
-#                     y_labels.append(id_)
-
-#     with open("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labels.pickle", 'wb') as f:
-#         pickle.dump(label_ids, f)
-
-#     recognizer.train(x_train, np.array(y_labels))
-#     recognizer.save("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\recognizers\\face-trainner.yml")
-
-
 def train_classifier():
     global recognizer
     global label_ids
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     image_dir = os.path.join(BASE_DIR, "images")
 
-    face_cascade = cv2.CascadeClassifier('D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\cascades\data\haarcascade_frontalface_alt2.xml')
+    face_cascade = cv2.CascadeClassifier(os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml'))
     recognizer = cv2.face.LBPHFaceRecognizer_create()
 
     current_id = 0
@@ -240,11 +197,11 @@ def train_classifier():
                     x_train.append(roi)
                     y_labels.append(id_)
 
-    with open("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labels.pickle", 'wb') as f:
+    with open(os.path.join(current_directory, 'pickles', 'face-labels.pickle'), 'wb') as f:
         pickle.dump(label_ids, f)
 
     recognizer.train(x_train, np.array(y_labels))
-    recognizer.save("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\recognizers\\face-trainner.yml")
+    recognizer.save(os.path.join(current_directory, 'recognizers', 'face-trainner.yml'))
 
 def train_classifier_without_aug(scale_factor,min_neighbours):
     global recognizer
@@ -252,7 +209,7 @@ def train_classifier_without_aug(scale_factor,min_neighbours):
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     image_dir = os.path.join(BASE_DIR, "images")
 
-    face_cascade = cv2.CascadeClassifier('D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\cascades\data\haarcascade_frontalface_alt2.xml')
+    face_cascade = cv2.CascadeClassifier(cv2.CascadeClassifier(os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml')))
     recognizer = cv2.face.LBPHFaceRecognizer_create()
 
     current_id = 0
@@ -284,11 +241,11 @@ def train_classifier_without_aug(scale_factor,min_neighbours):
                     x_train.append(roi)
                     y_labels.append(id_)
 
-    with open("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labels.pickle", 'wb') as f:
+    with open(os.path.join(current_directory, 'pickles', 'face-labels.pickle'), 'wb') as f:
         pickle.dump(label_ids, f)
  
     recognizer.train(x_train, np.array(y_labels))
-    recognizer.save("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\recognizers\\face-trainner.yml")
+    recognizer.save(os.path.join(current_directory, 'recognizers', 'face-trainner.yml'))
 
 def find_optimal(directory):
     accuracy = 0
@@ -319,7 +276,7 @@ def train_classifier_optimal(scale_factor,min_neighbours):
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     image_dir = os.path.join(BASE_DIR, "images")
 
-    face_cascade = cv2.CascadeClassifier('D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\cascades\data\haarcascade_frontalface_alt2.xml')
+    face_cascade = cv2.CascadeClassifier(cv2.CascadeClassifier(os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml')))
     recognizer = cv2.face.LBPHFaceRecognizer_create()
 
     current_id = 0
@@ -360,23 +317,23 @@ def train_classifier_optimal(scale_factor,min_neighbours):
                         x_train.append(augmented_image)
                     y_labels.extend(augmented_labels)
 
-    with open("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labels.pickle", 'wb') as f:
+    with open(os.path.join(current_directory, 'pickles', 'face-labels.pickle'), 'wb') as f:
         pickle.dump(label_ids, f)
 
     recognizer.train(x_train, np.array(y_labels))
     print("saving it")
-    recognizer.save("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\recognizers\\face-trainner.yml")
+    recognizer.save(os.path.join(current_directory, 'recognizers', 'face-trainner.yml'))
 
 
 
 
 def perform_facial_recognition_with_multiple_predictions(directory_path):
-    face_cascade = cv2.CascadeClassifier('D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\cascades\data\haarcascade_frontalface_alt2.xml')
+    face_cascade = cv2.CascadeClassifier(cv2.CascadeClassifier(os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml')))
     recognizer = cv2.face.LBPHFaceRecognizer_create()
-    recognizer.read("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\recognizers\\face-trainner.yml")
+    recognizer.read(os.path.join(current_directory, 'recognizers', 'face-trainer.yml'))
 
     labels = {}
-    with open("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labels.pickle", 'rb') as f:
+    with open(os.path.join(current_directory, 'pickles', 'face-labels.pickle'), 'rb') as f:
         labels = pickle.load(f)
 
     correct_predictions = 0
@@ -422,16 +379,13 @@ def perform_facial_recognition_with_multiple_predictions(directory_path):
     return accuracy, total_predictions
 
 def perform_facial_recognition_with_multiple_predictions2(directory_path):
-    face_cascade = cv2.CascadeClassifier('D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\cascades\data\haarcascade_frontalface_alt2.xml')
+    face_cascade = cv2.CascadeClassifier(cv2.CascadeClassifier(os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml')))
     recognizer = cv2.face.LBPHFaceRecognizer_create()
-    recognizer.read("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\recognizers\\face-trainner.yml")
+    recognizer.read(os.path.join(current_directory, 'recognizers', 'face-trainer.yml'))
 
     labels = {}
-    with open("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labels.pickle", 'rb') as f:
+    with open(os.path.join(current_directory, 'pickles', 'face-labels.pickle'), 'rb') as f:
         labels = pickle.load(f)
-
-    # print("labels: ", labels)
-    # print("type of value is: ", type(next(iter(labels.values()))))
 
     correct_predictions = 0
     total_predictions = 0
@@ -478,13 +432,13 @@ def perform_facial_recognition_with_multiple_predictions2(directory_path):
 def perform_facial_recognition_extended(directory_path):
     #print(f"The Python script is running under the username: {username}")
 
-    face_cascade = cv2.CascadeClassifier('D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\cascades\data\haarcascade_profileface.xml')
+    face_cascade = cv2.CascadeClassifier(cv2.CascadeClassifier(os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml')))
     #side_cascade = cv2.CascadeClassifier
     recognizer = cv2.face.LBPHFaceRecognizer_create()
-    recognizer.read("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\recognizers\\face-trainner.yml")
+    recognizer.read(os.path.join(current_directory, 'recognizers', 'face-trainer.yml'))
 
     labels = {"person_name": 1}
-    with open("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labels.pickle", 'rb') as f:
+    with open(os.path.join(current_directory, 'pickles', 'face-labels.pickle'), 'rb') as f:
         og_labels = pickle.load(f)
         labels = {v: k for k, v in og_labels.items()}
     #print(og_labels)
@@ -535,11 +489,6 @@ if __name__ == "__main__":
     start = timer()
     #train_classifier2()
     end = timer()
-    #print(f"total time: {end-start}")
-    #directory="D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\imageTest2"
-    directory="D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\imagesTest"
+    directory=os.path.join(current_directory, "imagesTest")
     find_optimal(directory)
-    #perform_facial_recognition_on_directory(directory)
-    #perform_facial_recognition_with_multiple_predictions2(directory)
-    #perform_facial_recognition_extended(directory)
     #test_classifier()

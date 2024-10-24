@@ -10,8 +10,10 @@ from keras.regularizers import *
 from keras.optimizers import RMSprop
 from matplotlib import pyplot as plt
 
+current_directory = os.getcwd()
+
 # Define the path to your training dataset directory
-dataset_path = 'D:/TCS_YF/Research/OpenCV-Python-Series-master/OpenCV-Python-Series-master/src/images'
+dataset_path = os.path.join(current_directory, 'images')
 
 # Initialize an empty dictionary to store the mapping of folder names to numerical labels
 label_ids = {}
@@ -43,7 +45,7 @@ label = []
 # Function to crop faces (assuming you have this function implemented)
 def cropFaces(image):
     #face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-    face_cascade = cv2.CascadeClassifier('D:/TCS_YF/Research/OpenCV-Python-Series-master/OpenCV-Python-Series-master/src/cascades/data/haarcascade_frontalface_alt2.xml')
+    face_cascade = cv2.CascadeClassifier(os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml'))
     # Convert the image to grayscale (required for face detection)
     gray_image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     
@@ -101,32 +103,6 @@ print("Unique Labels:", df['label'].unique())
 # Convert DataFrame to numpy arrays
 X_train = np.array(df['image'].tolist())
 y_train = to_categorical(np.array(df['label'].tolist()))
-
-# Define the ResNet-50 architecture function
-# def resnet(layer_in, n_filters, s):
-#     data = layer_in
-#     stride = (s, s)
-    
-#     # 1st Convolutional Layer
-#     merge_input = Conv2D(n_filters, (1, 1), strides=stride)(layer_in)        
-#     bn2 = BatchNormalization(axis=chanDim, epsilon=bnEps, momentum=bnMom)(merge_input)
-#     act2 = Activation('relu')(bn2)
-    
-#     # 2nd Convolutional Layer
-#     conv2 = Conv2D(n_filters, (3, 3), strides=stride, use_bias=False, padding='same', kernel_initializer='he_normal')(act2)  
-#     bn3 = BatchNormalization(axis=chanDim, epsilon=bnEps, momentum=bnMom)(conv2)
-#     act3 = Activation('relu')(bn3)
-    
-#     # 3rd Convolutional layer
-#     conv3 = Conv2D(n_filters, (1, 1), use_bias=False, kernel_initializer='he_normal')(act3)  
-    
-#     data = Conv2D(n_filters, (1, 1), padding='valid', strides=stride)(data)  # Adjusting the input size according to 3rd convolutional layer
-#     data = BatchNormalization()(data)  
-#     # Add filters, assumes filters/channels last
-#     layer_out = Add()([conv3, data])
-#     layer_out = Activation('relu')(layer_out)
-    
-#     return layer_out
 
 def resnet(layer_in, n_filters, s):
     data = layer_in

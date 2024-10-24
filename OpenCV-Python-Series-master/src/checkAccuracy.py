@@ -18,17 +18,19 @@ from keras.applications.vgg16 import preprocess_input
 from PIL import Image
 import tensorflow as tf
 
+current_directory = os.getcwd()
+
 def test_LBPHclassifier():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    test_dir = os.path.join(BASE_DIR, "imagesTest")
+    test_dir = os.path.join(current_directory, "imagesTest")
 
-    face_cascade = cv2.CascadeClassifier('D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\cascades\data\haarcascade_frontalface_alt2.xml')
+    face_cascade = cv2.CascadeClassifier(os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml'))
     recognizer = retRecognizer()
     label_ids = retLabel()
     print(f"Label ids ALREADY HAD ARE: {label_ids}")
 
     # Load label_ids from training
-    with open("D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labels.pickle", 'rb') as f:
+    with open(os.path.join(current_directory, 'pickles', 'face-labels.pickle'), 'rb') as f:
         label_ids = pickle.load(f)
     print(f"After loading from pickle Label ids are: {label_ids}")
 
@@ -99,14 +101,10 @@ def test_VGG16classifier():
     test_dir = os.path.join(BASE_DIR, "imageTest2")
 
     # Load the trained VGG16 model
-    saved_model_path = 'D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\VGGFaceRecoModel.h5'
+    saved_model_path = os.path.join(current_directory, 'VGGFaceRecoModel.h5')
     model = load_model(saved_model_path)
 
-    # Load label-to-id mapping dictionary from pickle
-    # label_to_id_path = 'D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labelsVGG16.pickle'
-    # with open(label_to_id_path, 'rb') as f:
-    #     label_to_id = pickle.load(f)
-    label_to_id_path = 'D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labelsVGG16.pickle'
+    label_to_id_path = os.path.join(current_directory, 'pickles', 'face-labelsVGG16.pickle')
     with open(label_to_id_path, 'rb') as f:
         label_to_id = pickle.load(f)
 
@@ -147,11 +145,11 @@ def test_ResNet50_classifier():
     test_dir = os.path.join(BASE_DIR, "imageTest2")
 
     # Load the saved ResNet50 model
-    saved_model_path = 'D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\recognizers\\ResNet50.keras'
+    saved_model_path = os.path.join(current_directory, 'recognizers', 'ResNet50.keras')
     model = load_model(saved_model_path)
 
     # Load label-to-id mapping dictionary from pickle
-    label_to_id_path = 'D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labelsResNet50.pickle'
+    label_to_id_path = os.path.join(current_directory, 'pickles', 'face-labelsResNet50.pickle')
     with open(label_to_id_path, 'rb') as f:
         label_to_id = pickle.load(f)
 
@@ -193,6 +191,6 @@ def test_ResNet50_classifier():
 if __name__ == "__main__":
     print("In main")
     #train_classifier()
-    #test_LBPHclassifier()
-    test_VGG16classifier()
-    test_ResNet50_classifier()
+    test_LBPHclassifier()
+    #test_VGG16classifier()
+    #test_ResNet50_classifier()

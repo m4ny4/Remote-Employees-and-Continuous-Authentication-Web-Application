@@ -3,6 +3,13 @@ import pickle
 import getpass
 import numpy as np
 from keras.models import load_model
+import os
+
+current_directory = os.getcwd()
+FACE_CASCADE_PATH = os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml')
+EYE_CASCADE_PATH = os.path.join(current_directory, 'cascades', 'data', 'haarcascade_eye.xml')
+SMILE_CASCADE_PATH = os.path.join(current_directory, 'cascades', 'data', 'haarcascade_smile.xml')
+
 
 def preprocess_image(img):
     # Preprocess the image according to the requirements of VGGFaceRecoModel
@@ -14,10 +21,6 @@ def preprocess_image(img):
 def perform_facial_recognition():
     username = getpass.getuser()
     print(f"The Python script is running under the username: {username}")
-
-    face_cascade = cv2.CascadeClassifier('D:/TCS_YF/Research/OpenCV-Python-Series-master/OpenCV-Python-Series-master/src/cascades/data/haarcascade_frontalface_alt2.xml')
-    eye_cascade = cv2.CascadeClassifier('D:/TCS_YF/Research/OpenCV-Python-Series-master/OpenCV-Python-Series-master/src/cascades/data/haarcascade_eye.xml')
-    smile_cascade = cv2.CascadeClassifier('D:/TCS_YF/Research/OpenCV-Python-Series-master/OpenCV-Python-Series-master/src/cascades/data/haarcascade_smile.xml')
 
     # Load the VGGFaceRecoModel
     model = load_model('VGGFaceRecoModel.h5')

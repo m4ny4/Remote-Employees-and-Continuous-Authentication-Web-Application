@@ -19,17 +19,21 @@ from keras.models import load_model
 from keras.optimizers import SGD
 from keras.callbacks import EarlyStopping,ModelCheckpoint
 from keras.layers import MaxPool2D
+from pathlib import Path
 import os
 import keras
 import pickle
 from keras.models import load_model
 from keras.src.legacy.preprocessing.image import ImageDataGenerator
+import os
+
+current_directory = os.getcwd()
 
 np.random.seed(42)
 tf.random.set_seed(42)
 
-train_path = 'D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\images'
-test_path='D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\imagesTest'
+train_path = os.path.join(current_directory, 'images','*')
+test_path=os.path.join(current_directory, 'imagesTest','*')
 IMAGE_SIZE = [224,224]
 
 vgg = VGG16(input_shape=IMAGE_SIZE + [3], weights='imagenet',include_top=False)
@@ -41,10 +45,11 @@ for layer in vgg.layers:
 for layer in vgg.layers[-4:]:
     layer.trainable = True
 
-folders = glob('D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\images\*')
+train_path = current_directory / 'images' / '*'
+test_path = current_directory / 'imagesTest' / '*'
 
-folders2 = glob('D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\imagesTest\*')
-print("size of folders is ",len(folders2))
+folders = glob(train_path)
+
 
 # %%
 x = Flatten()(vgg.output)
@@ -52,7 +57,7 @@ x = Flatten()(vgg.output)
 s = Dense(4096, activation='relu')(x)
 #x = Dropout(0.2)(x)
 # prediction = Dense(4096, activation='relu')
-prediction = Dense(56,activation='softmax')(x)
+prediction = Dense(55,activation='softmax')(x)
 
 print("Number of folders in images",len(folders))
 model = Model(inputs=vgg.input, outputs = prediction)
@@ -72,9 +77,6 @@ def count_total_images_in_folders(root_path):
         total_image_count += image_count
     
     return total_image_count
-
-# Specify the path to the images directory
-#train_path = r'D:\TCS_YF\Research\OpenCV-Python-Series-master\OpenCV-Python-Series-master\src\images'
 
 # Call the function to count total images in all directories under train_path
 total_images_count = count_total_images_in_folders(train_path)
@@ -151,7 +153,7 @@ finish = time.time()
 print("total time: ")
 print(finish-start_time)
 
-model.save('VGGFaceRecoModel.h5')
+model.save(os.path.join(current_directory, 'VGGFaceRecoModel.keras'))
 
 # %%
 plt.plot(r.history['loss'],label='train loss')
@@ -186,7 +188,7 @@ plt.tight_layout()  # Adjust layout to prevent overlap
 plt.show()
 
 # %%
-model.save('VGGFaceRecoModel.h5')
+model.save(os.path.join(current_directory, 'VGGFaceRecoModel.keras'))
 
 # Extract class labels from the data generator
 class_labels = list(training_set.class_indices.keys())
@@ -195,11 +197,7 @@ class_labels = list(training_set.class_indices.keys())
 label_to_id = {label: idx for idx, label in enumerate(class_labels)}
 
 
-# label_to_id_path = 'D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labelsVGG16.pickle'
-# with open(label_to_id_path, 'wb') as f:
-#     pickle.dump(label_to_id_path, f)
-
-label_to_id_path = 'D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labelsVGG16.pickle'
+label_to_id_path = os.path.join(current_directory, 'pickles','face-labelsVGG16.pickle')
 with open(label_to_id_path, 'wb') as f:
     pickle.dump(label_to_id, f)
 

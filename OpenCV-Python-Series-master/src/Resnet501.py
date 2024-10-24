@@ -15,9 +15,13 @@ from keras.layers import MaxPooling2D, BatchNormalization
 np.random.seed(42)
 tf.random.set_seed(42)
 
+current_directory = os.getcwd()
+
+# Define the path to your training dataset directory
+
 # Define the paths to the training and test datasets
-train_path = 'D:/TCS_YF/Research/OpenCV-Python-Series-master/OpenCV-Python-Series-master/src/images'
-test_path = 'D:/TCS_YF/Research/OpenCV-Python-Series-master/OpenCV-Python-Series-master/src/imagesTest'
+train_path = os.path.join(current_directory, 'images')
+test_path = os.path.join(current_directory, 'imagesTest')
 
 # Define the image size
 IMAGE_SIZE = [224, 224]
@@ -100,7 +104,7 @@ finish = time.time()
 print("Total time:", finish - start_time)
 
 # Save the trained model
-model.save('D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\recognizers\\ResNet50.keras')
+model.save(os.path.join(current_directory, 'recognizers','ResNet50.keras'))
 
 # Plot the training history
 import matplotlib.pyplot as plt
@@ -139,6 +143,6 @@ plt.show()
 # Save class labels and their corresponding IDs to a pickle file
 class_labels = list(training_set.class_indices.keys())
 label_to_id = {label: idx for idx, label in enumerate(class_labels)}
-label_to_id_path = 'D:\\TCS_YF\\Research\\OpenCV-Python-Series-master\\OpenCV-Python-Series-master\\src\\pickles\\face-labelsResNet50.pickle'
+label_to_id_path = os.path.join(current_directory, 'pickles','face-labelsResNet50.pickle')
 with open(label_to_id_path, 'wb') as f:
     pickle.dump(label_to_id, f)
