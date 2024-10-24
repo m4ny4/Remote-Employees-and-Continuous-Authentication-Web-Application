@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style3.css') }}" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="mainContainer">
+      <div class="title"><p>Pick your Pomodoro Technique</p></div>
+      <div class="boxcontainer">
+        <div class="box 1">
+            <div class="boxtextconatiner">
+                <p>Original Pomodoro</p>
+                <p>25 minutes of work with 5 minute breaks</p>
+                <button class="startBtn" onclick="buttonClicked('original')">Start</button>
+            </div>
+        </div>
+        <div class="box 2">
+            <div class="boxtextconatiner">
+                <p>Desktime Pomodoro</p>
+                <p>52 minutes of work with 17 minute breaks</p>
+                <button class="startBtn" onclick="buttonClicked('desktime')">Start</button>
+            </div>
+        </div>
+        <div class="box 3">
+            <div class="boxtextconatiner">
+                <p>Ultradian Rhythms</p>
+                <p>90 minutes of work with 30 minute breaks</p>
+                <button class="startBtn"  onclick="buttonClicked('ultradian')">Start</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    <script>
+        function buttonClicked(pomodoroType) {
+            sessionStorage.setItem('pomodorType', pomodoroType);
+            // Send values to Flask
+            fetch('/pomodoro', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({pomodoroType})
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display success message
+                console.log(data.message);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+            //});
+        //});
+            //window.location.href = 'fourthPage';
+        }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,94 @@
+@font-face {
+    font-family: Bogart;
+    src: url(../Fonts/BOGARTEXTRABOLDTRIAL.ttf);
+  }
+@font-face {
+    font-family: Now;
+    src: url("../Fonts/now.thin.otf") format("opentype");
+}
+body,html {
+    margin: 0;
+    padding: 0;
+    background-color: #FFEDDB;
+}
+* {
+    box-sizing: border-box;
+}
+.mainContainer{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 85vw;
+    height: 75vh;
+    /* outline-style: solid; */
+    display: flex;
+    flex-direction: column;
+    padding-top: 5%;
+}
+.title{
+    background-color: #5A794F;
+    height: 15%;
+    width: 70%;
+    border-radius: 20px;
+    font-family: Bogart;
+    color: white;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+.boxcontainer{
+    margin-top: auto;
+    margin-bottom: auto;
+    display: flex;
+    flex-direction: row;
+    /* outline-style: solid; */
+    height: 50%;
+}
+.box{
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 90%;
+    aspect-ratio: 1;
+    background-color: white;
+    /* outline-style: solid; */
+    margin-left: auto;
+    margin-right: auto;
+    flex-basis: 25%;
+    border-radius: 20px;
+    padding: 1%;
+}
+.boxtextconatiner{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center; 
+}
+.boxtextconatiner>p:nth-child(1){
+    font-family: Bogart;
+    font-size: 1.3rem;
+    /* outline-style: solid; */
+}   
+.boxtextconatiner>p:nth-child(2){
+    font-family: Now;
+    font-size: small;
+    font-weight: bold;
+    /* outline-style: solid; */
+    margin-bottom: 8%;
+}
+.startBtn{
+    border: none;
+    border-radius: 25px;
+    background-color: #E08479;
+    width: 40%;
+    height: 25%;
+    font-family: Bogart;
+    color: white;
+    font-size: large;
+    cursor: pointer;
+}

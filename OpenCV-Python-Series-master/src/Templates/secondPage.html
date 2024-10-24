@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style2.css') }}" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="textContainer">
+        <p>How long would you like to work for?</p>
+      </div>
+      <div class="mainContainer">
+        <div class="SliderValContainer">
+          <div class="slidecontainer">
+          <input type="range" min="0" max="23" value="0" oninput="rangeValue.innerText = this.value+' hours'" class="slider">
+           </div>
+        
+          <div class="val1" id="rangeValue">0 hours</div>
+          <div class="slidecontainer2">
+            <input type="range" min="0" max="59" value="0" oninput="rangeValue2.innerText = this.value+' minutes'" class="slider">
+             </div>
+          <div class="val2" id="rangeValue2">0 minutes</div>
+        </div>
+        <button class="yesBtn"  onclick="buttonClicked()" >Set</button>
+      </div>
+    </div>
+    <script>
+        function buttonClicked() {
+            //document.addEventListener("DOMContentLoaded", function() {
+            var slider1 = document.getElementById("rangeValue");
+            var slider2 = document.getElementById("rangeValue2");
+            //var submitButton = document.getElementById("submitButton");
+
+            //submitButton.addEventListener("click", function() {
+            // var hours = slider1.value;
+            // var minutes = slider2.value * 15;
+
+            var hoursText = slider1.innerText;
+            var minutesText = slider2.innerText;
+
+            // Use regular expressions to extract numerical values
+            var hoursMatch = hoursText.match(/\d+/);
+            var minutesMatch = minutesText.match(/\d+/);
+
+            // If matches are found, convert them to integers
+            var hours = hoursMatch ? parseInt(hoursMatch[0]) : 0;
+            var minutes = minutesMatch ? parseInt(minutesMatch[0]) : 0;
+
+            sessionStorage.setItem('countdownHours', hours);
+            sessionStorage.setItem('countdownMinutes', minutes);
+
+
+            // Send values to Flask
+            fetch('/record_values', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ hours, minutes })
+                //body: JSON.stringify({ parseInt(sessionStorage.getItem('countdownHours')), parseInt(sessionStorage.getItem('countdownHours')))
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display success message
+                console.log(data.message);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+            sessionStorage.setItem('countdownHours', hours);
+            sessionStorage.setItem('countdownMinutes', minutes);
+
+            var hours2 = parseInt(sessionStorage.getItem('countdownHours')) || 0;
+            var minutes2 = parseInt(sessionStorage.getItem('countdownMinutes')) || 0;
+
+            console.log("Hours session:", hours);
+            console.log("Minutes session:", minutes);
+            //});
+        //});
+
+
+            window.location.href = 'thirdPage';
+        }
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     var slider1 = document.getElementById("myRange");
+        //     var slider2 = document.getElementById("myRange2");
+        //     var submitButton = document.getElementById("submitButton");
+    
+        //     submitButton.addEventListener("click", function() {
+        //         var hours = slider1.value;
+        //         var minutes = slider2.value * 15;
+    
+        //         // Send values to Flask
+        //         fetch('/record_values', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             },
+        //             body: JSON.stringify({ hours, minutes })
+        //         })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             // Display success message
+        //             console.log(data.message);
+        //         })
+        //         .catch(error => {
+        //             console.error(error);
+        //         });
+        //     });
+        // });
+    </script>
+    
+
+</body>
+</html>

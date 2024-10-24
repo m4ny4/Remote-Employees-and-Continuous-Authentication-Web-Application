@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styleForm2.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Function to resize the textarea dynamically
+            function resizeTextarea() {
+                $(this).css('height', 'auto').height(this.scrollHeight);
+            }
+
+            // Attach the resizeTextarea function to the textarea's input event
+            $('textarea#response').on('input', resizeTextarea);
+        });
+    </script>
+</head>
+<body>
+
+<div class="container" style="overflow-y: scroll">
+
+    <div class="content">
+        <div class="text">System A: Non-Intrusive Authentication </div>
+        <img src="{{ url_for('static', filename='css/LivingRoomPicture.png') }}" style="max-width: 80%; max-height: 40%px;" >
+        <div class="text2">1. For Task 1, please describe what you see in the picture above in 250 words. There is no right or wrong answer, just describe as much as you can!</div>
+        <div class="text2">To get you started, you can (but don't have to): describe what the each person is doing and the setting they are in.  </div>
+        <textarea id="response" placeholder="Enter your description here."></textarea>
+
+        <div class="text2">2. For Task 2, please try your best to solve these math questions!</div>
+        <div class="text2" id="math-equation"></div>
+        <div class="text2">a. <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><mn>4</mn></mrow><mn>8</mn></mfrac></math></div>
+        <textarea id="response2" placeholder="Answer."></textarea>
+
+        <div class="text2">b. <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><msup><mn>3</mn><mn>2</mn></msup><mo>)</mo><mo>*</mo><mn>2</mn><mo>+</mo><mn>7</mn><mo>-</mo><mn>2</mn></mrow></math></div>
+        <textarea id="response3" placeholder="Answer."></textarea>
+
+        <div class="text2"> c.<math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mo>(</mo><mn>3</mn><mo>+</mo><msqrt><mn>4</mn></msqrt><mo>)</mo><mo>*</mo><mn>6</mn></mrow><mn>3</mn></mfrac></math></div>
+        <textarea id="response4" placeholder="Answer."></textarea>
+        
+        <button class="btn" id="captureButton" type="button" onclick="window.location.href ='SystemB'">Next System</button>
+    </div>
+
+</div>
+
+<script>
+    function checkForPrompt() {
+    // Make an AJAX request to Flask to check if the prompt should be shown
+    $.ajax({
+        url: '/checkFace',
+        type: 'GET',
+        success: function (response) {
+            let current = response.Face;
+            if(current==null){
+                window.location.href = '{{ url_for("login") }}';
+            }
+            else if (current=="NoMatch") {
+                // Make another AJAX request to trigger the scheduler_shutdown method
+                $.ajax({
+                    url: '/schedulerShutdown',
+                    type: 'POST',
+                    success: function (response) {
+                        console.log('Scheduler shutdown triggered successfully.');
+                    },
+                    error: function () {
+                        console.error('Error triggering scheduler shutdown.');
+                    }
+                });
+
+            }
+            },
+        error: function () {
+            // Handle AJAX error
+            console.error('Error while checking for prompt.');
+        }
+    });
+}
+
+// Set interval to periodically check for prompt
+setInterval(checkForPrompt, 50000);
+</script>
+
+</body>
+</html>
