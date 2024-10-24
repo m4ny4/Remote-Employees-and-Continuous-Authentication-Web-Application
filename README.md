@@ -30,7 +30,7 @@ https://github.com/ageitgey/face_recognition
 In order for the HTML and CSS files to load appropriately, you will need to download the Bogart fonts online, however, these can easily be replaced with whichever fonts you desire.
 
 ## Running
-To interact with the web application, you will need to first need to unzip the `Remote-Employees-and-Continuous-Authentication-Web-Application (2)` folder. Then, you must access the `OpenCV-Python-Series-master` folder, following which the `src` folder and run the `webApp.py` file within the same. This can be found at:
+To interact with the web application, you will need to first need to unzip the `Remote-Employees-and-Continuous-Authentication-Web-Application (3)` folder. Then, you must access the `OpenCV-Python-Series-master` folder, following which the `src` folder and run the `webApp.py` file within the same. This can be found at:
 ```
 OpenCV-Python-Series-master\src\webApp.py
 ```
