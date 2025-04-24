@@ -5,7 +5,7 @@ import pandas as pd
 import pickle
 from keras.utils import to_categorical
 from keras.models import Model
-from keras.layers import *
+from keras.layers import Conv2D, Input, BatchNormalization, Activation, Add, GlobalAveragePooling2D, Dense, Dropout
 from keras.regularizers import *
 from keras.optimizers import RMSprop
 from matplotlib import pyplot as plt
@@ -91,14 +91,6 @@ df = df.sample(frac=1)
 
 # Print unique labels
 print("Unique Labels:", df['label'].unique())
-
-# # Convert DataFrame to numpy arrays
-# X_train = np.array(df['image'].tolist())
-# y_train = to_categorical(np.array(df['label'].tolist()))
-
-# # Create a DataFrame and shuffle the dataset
-# df = pd.DataFrame({'image': images, 'label': label})
-# df = df.sample(frac=1)
 
 # Convert DataFrame to numpy arrays
 X_train = np.array(df['image'].tolist())

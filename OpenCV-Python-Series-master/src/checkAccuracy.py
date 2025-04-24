@@ -24,7 +24,10 @@ def test_LBPHclassifier():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     test_dir = os.path.join(current_directory, "imagesTest")
 
-    face_cascade = cv2.CascadeClassifier(os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml'))
+    #face_cascade = cv2.CascadeClassifier(os.path.join(current_directory, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml'))
+    face_cascade = cv2.CascadeClassifier(os.path.join(BASE_DIR, 'cascades', 'data', 'haarcascade_frontalface_alt2.xml'))
+
+
     recognizer = retRecognizer()
     label_ids = retLabel()
     print(f"Label ids ALREADY HAD ARE: {label_ids}")
@@ -190,7 +193,7 @@ def test_ResNet50_classifier():
 
 if __name__ == "__main__":
     print("In main")
-    #train_classifier()
+    train_classifier()
     test_LBPHclassifier()
     #test_VGG16classifier()
     #test_ResNet50_classifier()
